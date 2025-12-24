@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Ai Bot Lm Studio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #0a0a0a;
+            color: #e1e1e1;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .header {
+            background-color: #1a1a1a;
+            padding: 16px 20px;
+            border-bottom: 1px solid #2d2d2d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #0088cc, #00a8ff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon i {
+            color: white;
+            font-size: 18px;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #0088cc, #00a8ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background-color: #2d2d2d;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #ff3b30;
+        }
+
+        .status-dot.connected {
+            background-color: #34c759;
+            box-shadow: 0 0 8px #34c759;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 280px;
+            background-color: #1a1a1a;
+            border-right: 1px solid #2d2d2d;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .connection-form {
+            background-color: #2d2d2d;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #e1e1e1;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 6px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 14px;
+            background-color: #3d3d3d;
+            border: 1px solid #4d4d4d;
+            border-radius: 8px;
+            color: #e1e1e1;
+            font-size: 15px;
+            transition: border 0.2s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #0088cc;
+        }
+
+        .hidden-ip {
+            font-family: monospace;
+            letter-spacing: 2px;
+            color: #34c759;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .connect-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #0088cc, #0066aa);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .connect-btn:hover {
+            background: linear-gradient(135deg, #0099dd, #0077bb);
+            transform: translateY(-1px);
+        }
+
+        .connect-btn:active {
+            transform: translateY(0);
+        }
+
+        .connect-btn:disabled {
+            background: #3d3d3d;
+            color: #777;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .settings-section {
+            background-color: #2d2d2d;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .settings-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #e1e1e1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .instructions {
+            background-color: #2d2d2d;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .instructions h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #e1e1e1;
+        }
+
+        .instructions ol {
+            padding-left: 18px;
+            font-size: 14px;
+            color: #999;
+            line-height: 1.6;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #0a0a0a;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background-color: #1a1a1a;
+            padding: 16px 20px;
+            border-bottom: 1px solid #2d2d2d;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #34c759, #2ecc71);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-avatar i {
+            color: white;
+            font-size: 20px;
+        }
+
+        .chat-info h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e1e1e1;
+        }
+
+        .chat-info p {
+            font-size: 14px;
+            color: #999;
+            margin-top: 2px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background-color: #0a0a0a;
+        }
+
+        .message {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background-color: #0088cc;
+            color: white;
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 136, 204, 0.3);
+        }
+
+        .ai-message {
+            align-self: flex-start;
+            background-color: #2d2d2d;
+            color: #e1e1e1;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 4px;
+            text-align: right;
+        }
+
+        .ai-message .message-time {
+            color: #999;
+        }
+
+        .typing-indicator {
+            align-self: flex-start;
+            background-color: #2d2d2d;
+            border-radius: 18px;
+            border-bottom-left-radius: 4px;
+            padding: 12px 16px;
+            display: none;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .typing-indicator.active {
+            display: flex;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #999;
+            animation: typing 1.4s infinite ease-in-out both;
+        }
+
+        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        .chat-input-area {
+            padding: 16px 20px;
+            background-color: #1a1a1a;
+            border-top: 1px solid #2d2d2d;
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .chat-input-wrapper {
+            flex: 1;
+            background-color: #2d2d2d;
+            border-radius: 20px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            border: 1px solid transparent;
+        }
+
+        .chat-input-wrapper:focus-within {
+            border-color: #0088cc;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #e1e1e1;
+            font-size: 15px;
+            resize: none;
+            max-height: 120px;
+            min-height: 20px;
+            line-height: 1.4;
+            padding: 8px 0;
+        }
+
+        .chat-input:focus {
+            outline: none;
+        }
+
+        .chat-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .action-button {
+            width: 44px;
+            height: 44px;
+            background: #3d3d3d;
+            border: none;
+            border-radius: 50%;
+            color: #e1e1e1;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .action-button:hover {
+            background: #4d4d4d;
+            transform: scale(1.05);
+        }
+
+        .send-button {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #0088cc, #0066aa);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .send-button:hover {
+            background: linear-gradient(135deg, #0099dd, #0077bb);
+            transform: scale(1.05);
+        }
+
+        .send-button:active {
+            transform: scale(1);
+        }
+
+        .send-button:disabled {
+            background: #3d3d3d;
+            color: #777;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #e1e1e1;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 100;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        .clear-context-btn {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #3d3d3d;
+            color: #e1e1e1;
+            border: 1px solid #4d4d4d;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .clear-context-btn:hover {
+            background-color: #4d4d4d;
+            border-color: #ff3b30;
+            color: #ff3b30;
+        }
+
+        .file-upload-container {
+            display: none;
+            position: absolute;
+            bottom: 80px;
+            right: 20px;
+            width: 300px;
+            background-color: #2d2d2d;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            border: 1px solid #4d4d4d;
+        }
+
+        .file-upload-container.active {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .file-upload-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .file-upload-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e1e1e1;
+        }
+
+        .close-upload {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .file-drop-area {
+            border: 2px dashed #4d4d4d;
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+        }
+
+        .file-drop-area:hover {
+            border-color: #0088cc;
+            background-color: rgba(0, 136, 204, 0.05);
+        }
+
+        .file-drop-area i {
+            font-size: 48px;
+            color: #999;
+            margin-bottom: 15px;
+        }
+
+        .file-drop-text {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        .file-drop-subtext {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #3d3d3d;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .file-icon {
+            width: 36px;
+            height: 36px;
+            background-color: #4d4d4d;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+        .file-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .file-name {
+            font-size: 13px;
+            color: #e1e1e1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-size {
+            font-size: 11px;
+            color: #999;
+        }
+
+        .file-remove {
+            background: none;
+            border: none;
+            color: #ff3b30;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 5px;
+            margin-left: 10px;
+        }
+
+        .upload-button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #0088cc, #0066aa);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.2s;
+        }
+
+        .upload-button:hover {
+            background: linear-gradient(135deg, #0099dd, #0077bb);
+        }
+
+        .upload-button:disabled {
+            background: #3d3d3d;
+            color: #777;
+            cursor: not-allowed;
+        }
+
+        .message-files {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .file-attachment {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 12px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-size: 13px;
+            color: #e1e1e1;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .file-attachment:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .file-attachment i {
+            margin-right: 6px;
+            color: #0088cc;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 280px;
+                height: 100%;
+                z-index: 101;
+                transition: left 0.3s ease;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .logo-text {
+                font-size: 18px;
+            }
+
+            .message {
+                max-width: 85%;
+            }
+
+            .chat-input-area {
+                padding: 12px 16px;
+            }
+
+            .file-upload-container {
+                width: calc(100% - 40px);
+                right: 20px;
+                left: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 12px 16px;
+            }
+
+            .chat-header {
+                padding: 12px 16px;
+            }
+
+            .chat-messages {
+                padding: 16px;
+            }
+
+            .message {
+                max-width: 90%;
+                padding: 10px 14px;
+                font-size: 14px;
+            }
+
+            .message-time {
+                font-size: 10px;
+            }
+
+            .connection-form, .instructions, .settings-section {
+                padding: 16px;
+            }
+
+            .chat-actions {
+                gap: 5px;
+            }
+
+            .action-button, .send-button {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        .welcome-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+            font-size: 15px;
+        }
+
+        .welcome-message i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #0088cc;
+            opacity: 0.7;
+        }
+
+        .connection-success {
+            color: #34c759;
+        }
+
+        .connection-error {
+            color: #ff3b30;
+        }
+
+        .connection-info-box {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border-left: 3px solid #34c759;
+        }
+
+        .connection-info-title {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 5px;
+        }
+
+        .connection-info-details {
+            font-size: 13px;
+            color: #e1e1e1;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .history-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .history-btn {
+            flex: 1;
+            padding: 8px;
+            background-color: #3d3d3d;
+            color: #e1e1e1;
+            border: 1px solid #4d4d4d;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .history-btn:hover {
+            background-color: #4d4d4d;
+            border-color: #0088cc;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #3d3d3d;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4d4d4d;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="logo-text">Connect Ai Bot Lm Studio</div>
+            </div>
+            
+            <div class="connection-status">
+                <div class="status-dot" id="status-dot"></div>
+                <span id="status-text">Не подключено</span>
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <div class="sidebar" id="sidebar">
+                <div class="connection-form">
+                    <h3 class="form-title">Подключение к серверу</h3>
+                    
+                    <div class="input-group">
+                        <label for="ip-address">IP-адрес</label>
+                        <input type="text" id="ip-address" placeholder="127.0.0.1">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="port">Порт</label>
+                        <input type="number" id="port" placeholder="1234" min="1" max="65535">
+                    </div>
+                    
+                    <button class="connect-btn" id="connect-btn">
+                        <i class="fas fa-plug"></i>
+                        <span>Подключиться</span>
+                    </button>
+                    
+                    <div class="connection-info-box" id="connection-display" style="display: none;">
+                        <div class="connection-info-title">Текущее подключение:</div>
+                        <div class="connection-info-details">
+                            <div>IP: <span class="hidden-ip" id="hidden-ip-display">127.*.*.*</span></div>
+                            <div>Порт: <span id="port-display">1234</span></div>
+                            <div id="model-info" style="font-size: 12px; color: #34c759; margin-top: 5px;">
+                                <i class="fas fa-check-circle"></i> Сервер доступен
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-title">
+                        <i class="fas fa-history"></i>
+                        История подключений
+                    </h3>
+                    
+                    <div class="history-buttons">
+                        <button class="history-btn" id="save-settings-btn">
+                            <i class="fas fa-save"></i> Сохранить
+                        </button>
+                        <button class="history-btn" id="load-settings-btn">
+                            <i class="fas fa-history"></i> Загрузить
+                        </button>
+                    </div>
+                    
+                    <button class="clear-context-btn" id="clear-context-btn">
+                        <i class="fas fa-trash"></i>
+                        Очистить историю чата
+                    </button>
+                    
+                    <div style="margin-top: 15px; font-size: 12px; color: #999; text-align: center;">
+                        <i class="fas fa-info-circle"></i> Настройки сохраняются автоматически
+                    </div>
+                </div>
+                
+                <div class="instructions">
+                    <h3>Инструкция по подключению</h3>
+                    <ol>
+                        <li>Запустите LM Studio</li>
+                        <li>Загрузите модель</li>
+                        <li>Перейдите во вкладку "Local Server"</li>
+                        <li>Запустите сервер API</li>
+                        <li>Введите данные и подключитесь</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="sidebar-overlay" id="sidebar-overlay"></div>
+            
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="chat-avatar">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="chat-info">
+                        <h2>LM Studio AI</h2>
+                        <p id="connection-info">Ожидание подключения...</p>
+                    </div>
+                </div>
+                
+                <div class="chat-messages" id="chat-messages">
+                    <div class="welcome-message" id="welcome-message">
+                        <i class="fas fa-robot"></i>
+                        <p>Подключитесь к серверу LM Studio, чтобы начать общение с AI</p>
+                    </div>
+                </div>
+                
+                <div class="typing-indicator" id="typing-indicator">
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                
+                <div class="file-upload-container" id="file-upload-container">
+                    <div class="file-upload-header">
+                        <div class="file-upload-title">Загрузить файлы</div>
+                        <button class="close-upload" id="close-upload">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="file-drop-area" id="file-drop-area">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <div class="file-drop-text">Перетащите файлы сюда</div>
+                        <div class="file-drop-subtext">или нажмите для выбора</div>
+                        <input type="file" class="file-input" id="file-input" multiple>
+                    </div>
+                    <div class="file-list" id="file-list"></div>
+                    <button class="upload-button" id="upload-button">
+                        <i class="fas fa-upload"></i> Прикрепить файлы
+                    </button>
+                </div>
+                
+                <div class="chat-input-area">
+                    <div class="chat-input-wrapper">
+                        <textarea class="chat-input" id="chat-input" placeholder="Введите сообщение..." rows="1" disabled></textarea>
+                    </div>
+                    <div class="chat-actions">
+                        <button class="action-button" id="attach-file-btn">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <button class="send-button" id="send-btn" disabled>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ipAddressInput = document.getElementById('ip-address');
+            const portInput = document.getElementById('port');
+            const connectBtn = document.getElementById('connect-btn');
+            const statusDot = document.getElementById('status-dot');
+            const statusText = document.getElementById('status-text');
+            const chatMessages = document.getElementById('chat-messages');
+            const chatInput = document.getElementById('chat-input');
+            const sendBtn = document.getElementById('send-btn');
+            const typingIndicator = document.getElementById('typing-indicator');
+            const connectionInfo = document.getElementById('connection-info');
+            const welcomeMessage = document.getElementById('welcome-message');
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            const clearContextBtn = document.getElementById('clear-context-btn');
+            const connectionDisplay = document.getElementById('connection-display');
+            const hiddenIpDisplay = document.getElementById('hidden-ip-display');
+            const portDisplay = document.getElementById('port-display');
+            const modelInfo = document.getElementById('model-info');
+            const attachFileBtn = document.getElementById('attach-file-btn');
+            const fileUploadContainer = document.getElementById('file-upload-container');
+            const closeUploadBtn = document.getElementById('close-upload');
+            const fileDropArea = document.getElementById('file-drop-area');
+            const fileInput = document.getElementById('file-input');
+            const fileList = document.getElementById('file-list');
+            const uploadButton = document.getElementById('upload-button');
+            const saveSettingsBtn = document.getElementById('save-settings-btn');
+            const loadSettingsBtn = document.getElementById('load-settings-btn');
+            
+            let isConnected = false;
+            let connectionUrl = '';
+            let conversationHistory = [];
+            let attachedFiles = [];
+            
+            function loadSettings() {
+                const savedIp = localStorage.getItem('lmStudioIp');
+                const savedPort = localStorage.getItem('lmStudioPort');
+                
+                if (savedIp) ipAddressInput.value = savedIp;
+                if (savedPort) portInput.value = savedPort;
+                
+                console.log('Загружены сохраненные настройки:', savedIp, savedPort);
+            }
+            
+            function saveSettings() {
+                const ip = ipAddressInput.value.trim();
+                const port = portInput.value.trim();
+                
+                if (ip) localStorage.setItem('lmStudioIp', ip);
+                if (port) localStorage.setItem('lmStudioPort', port);
+                
+                console.log('Сохранены настройки:', ip, port);
+                alert('Настройки сохранены!');
+            }
+            
+            function hideIpAddress(ip) {
+                const parts = ip.split('.');
+                if (parts.length === 4) {
+                    return `${parts[0]}.*.*.*`;
+                }
+                return ip;
+            }
+            
+            function updateConnectionStatus(connected, ip = '', port = '') {
+                isConnected = connected;
+                
+                if (connected) {
+                    statusDot.classList.add('connected');
+                    statusText.textContent = 'Подключено';
+                    connectBtn.innerHTML = '<i class="fas fa-unplug"></i><span>Отключиться</span>';
+                    chatInput.disabled = false;
+                    sendBtn.disabled = false;
+                    chatInput.placeholder = 'Сообщение...';
+                    connectionInfo.textContent = `Подключено к порту: ${port}`;
+                    connectionInfo.classList.add('connection-success');
+                    connectionInfo.classList.remove('connection-error');
+                    
+                    connectionDisplay.style.display = 'block';
+                    hiddenIpDisplay.textContent = hideIpAddress(ip);
+                    portDisplay.textContent = port;
+                    
+                    if (welcomeMessage) {
+                        welcomeMessage.style.display = 'none';
+                    }
+                    
+                    addMessage('ai-message', 'Подключение установлено! Готов к общению.', false);
+                } else {
+                    statusDot.classList.remove('connected');
+                    statusText.textContent = 'Не подключено';
+                    connectBtn.innerHTML = '<i class="fas fa-plug"></i><span>Подключиться</span>';
+                    chatInput.disabled = true;
+                    sendBtn.disabled = true;
+                    chatInput.placeholder = 'Сначала подключитесь...';
+                    connectionInfo.textContent = 'Ожидание подключения...';
+                    connectionInfo.classList.remove('connection-success');
+                    connectionInfo.classList.remove('connection-error');
+                    connectionUrl = '';
+                    
+                    connectionDisplay.style.display = 'none';
+                    
+                    if (welcomeMessage && chatMessages.children.length <= 2) {
+                        welcomeMessage.style.display = 'block';
+                    }
+                }
+            }
+            
+            function getFileIcon(filename) {
+                const ext = filename.split('.').pop().toLowerCase();
+                const icons = {
+                    'jpg': 'fas fa-image',
+                    'jpeg': 'fas fa-image',
+                    'png': 'fas fa-image',
+                    'gif': 'fas fa-image',
+                    'bmp': 'fas fa-image',
+                    'svg': 'fas fa-image',
+                    'pdf': 'fas fa-file-pdf',
+                    'doc': 'fas fa-file-word',
+                    'docx': 'fas fa-file-word',
+                    'xls': 'fas fa-file-excel',
+                    'xlsx': 'fas fa-file-excel',
+                    'ppt': 'fas fa-file-powerpoint',
+                    'pptx': 'fas fa-file-powerpoint',
+                    'txt': 'fas fa-file-alt',
+                    'zip': 'fas fa-file-archive',
+                    'rar': 'fas fa-file-archive',
+                    '7z': 'fas fa-file-archive',
+                    'mp3': 'fas fa-file-audio',
+                    'wav': 'fas fa-file-audio',
+                    'mp4': 'fas fa-file-video',
+                    'avi': 'fas fa-file-video',
+                    'mkv': 'fas fa-file-video'
+                };
+                return icons[ext] || 'fas fa-file';
+            }
+            
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+            
+            function updateFileList() {
+                fileList.innerHTML = '';
+                
+                if (attachedFiles.length === 0) {
+                    fileList.innerHTML = '<div style="text-align: center; color: #999; padding: 20px; font-size: 14px;">Нет выбранных файлов</div>';
+                    uploadButton.disabled = true;
+                    return;
+                }
+                
+                uploadButton.disabled = false;
+                
+                attachedFiles.forEach((file, index) => {
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-item';
+                    
+                    const fileIcon = document.createElement('div');
+                    fileIcon.className = 'file-icon';
+                    const icon = document.createElement('i');
+                    icon.className = getFileIcon(file.name);
+                    fileIcon.appendChild(icon);
+                    
+                    const fileInfo = document.createElement('div');
+                    fileInfo.className = 'file-info';
+                    
+                    const fileName = document.createElement('div');
+                    fileName.className = 'file-name';
+                    fileName.textContent = file.name;
+                    
+                    const fileSize = document.createElement('div');
+                    fileSize.className = 'file-size';
+                    fileSize.textContent = formatFileSize(file.size);
+                    
+                    fileInfo.appendChild(fileName);
+                    fileInfo.appendChild(fileSize);
+                    
+                    const fileRemove = document.createElement('button');
+                    fileRemove.className = 'file-remove';
+                    fileRemove.innerHTML = '<i class="fas fa-times"></i>';
+                    fileRemove.onclick = () => {
+                        attachedFiles.splice(index, 1);
+                        updateFileList();
+                    };
+                    
+                    fileItem.appendChild(fileIcon);
+                    fileItem.appendChild(fileInfo);
+                    fileItem.appendChild(fileRemove);
+                    fileList.appendChild(fileItem);
+                });
+            }
+            
+            function attachFilesToMessage(message) {
+                if (attachedFiles.length === 0) return message;
+                
+                let fileInfo = '\n\n📎 Прикрепленные файлы:';
+                attachedFiles.forEach(file => {
+                    fileInfo += `\n📄 ${file.name} (${formatFileSize(file.size)})`;
+                });
+                
+                return message + fileInfo;
+            }
+            
+            function addMessage(type, text, saveToHistory = true, files = []) {
+                if (welcomeMessage && welcomeMessage.style.display !== 'none') {
+                    welcomeMessage.style.display = 'none';
+                }
+                
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', type);
+                
+                const messageText = document.createElement('div');
+                messageText.textContent = text;
+                messageDiv.appendChild(messageText);
+                
+                if (files && files.length > 0) {
+                    const filesDiv = document.createElement('div');
+                    filesDiv.className = 'message-files';
+                    
+                    files.forEach(file => {
+                        const fileLink = document.createElement('a');
+                        fileLink.className = 'file-attachment';
+                        fileLink.href = '#';
+                        fileLink.innerHTML = `<i class="${getFileIcon(file.name)}"></i>${file.name}`;
+                        fileLink.onclick = (e) => {
+                            e.preventDefault();
+                            const blob = new Blob([file], { type: file.type });
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = file.name;
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(url);
+                        };
+                        filesDiv.appendChild(fileLink);
+                    });
+                    
+                    messageDiv.appendChild(filesDiv);
+                }
+                
+                const timeDiv = document.createElement('div');
+                timeDiv.classList.add('message-time');
+                
+                const now = new Date();
+                const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
+                                 now.getMinutes().toString().padStart(2, '0');
+                timeDiv.textContent = timeString;
+                
+                messageDiv.appendChild(timeDiv);
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                if (saveToHistory) {
+                    if (type === 'user-message') {
+                        conversationHistory.push({
+                            role: 'user',
+                            content: text,
+                            files: files.map(f => f.name)
+                        });
+                    } else if (type === 'ai-message') {
+                        conversationHistory.push({
+                            role: 'assistant',
+                            content: text
+                        });
+                    }
+                    
+                    if (conversationHistory.length > 20) {
+                        conversationHistory = conversationHistory.slice(-20);
+                    }
+                }
+            }
+            
+            function buildSimpleMessage(userMessage) {
+                return {
+                    model: 'local-model',
+                    messages: [
+                        {
+                            role: 'user',
+                            content: userMessage
+                        }
+                    ],
+                    temperature: 0.7,
+                    max_tokens: 500,
+                    stream: false
+                };
+            }
+            
+            async function sendMessage() {
+                const message = chatInput.value.trim();
+                if (!message || !isConnected) return;
+                
+                const messageWithFiles = attachFilesToMessage(message);
+                addMessage('user-message', message, true, [...attachedFiles]);
+                chatInput.value = '';
+                chatInput.style.height = 'auto';
+                
+                attachedFiles = [];
+                updateFileList();
+                fileUploadContainer.classList.remove('active');
+                
+                typingIndicator.classList.add('active');
+                
+                try {
+                    const payload = buildSimpleMessage(messageWithFiles);
+                    
+                    const response = await fetch(`${connectionUrl}/v1/chat/completions`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(`Ошибка ${response.status}: ${errorText.substring(0, 100)}`);
+                    }
+                    
+                    const data = await response.json();
+                    const aiResponse = data.choices[0].message.content;
+                    
+                    addMessage('ai-message', aiResponse);
+                } catch (error) {
+                    console.error('Ошибка:', error);
+                    
+                    if (error.message.includes('400')) {
+                        addMessage('ai-message', 'Ошибка формата запроса. Попробуйте отправить сообщение снова или очистить историю.');
+                        modelInfo.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Ошибка формата запроса';
+                        modelInfo.style.color = '#ff3b30';
+                    } else {
+                        addMessage('ai-message', `Ошибка подключения: ${error.message}`);
+                        connectionInfo.textContent = 'Ошибка подключения';
+                        connectionInfo.classList.add('connection-error');
+                    }
+                } finally {
+                    typingIndicator.classList.remove('active');
+                }
+            }
+            
+            async function toggleConnection() {
+                if (isConnected) {
+                    updateConnectionStatus(false);
+                    addMessage('ai-message', 'Подключение разорвано.', false);
+                } else {
+                    const ip = ipAddressInput.value.trim();
+                    const port = portInput.value.trim();
+                    
+                    if (!ip || !port) {
+                        alert('Введите IP-адрес и порт');
+                        return;
+                    }
+                    
+                    connectionUrl = `http://${ip}:${port}`;
+                    
+                    connectBtn.disabled = true;
+                    connectBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Подключение...</span>';
+                    
+                    try {
+                        const response = await fetch(`${connectionUrl}/v1/models`, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error(`Сервер недоступен: ${response.status}`);
+                        }
+                        
+                        const data = await response.json();
+                        const modelName = data.data[0]?.id || 'Неизвестная модель';
+                        modelInfo.innerHTML = `<i class="fas fa-check-circle"></i> Модель: ${modelName}`;
+                        
+                        updateConnectionStatus(true, ip, port);
+                    } catch (error) {
+                        console.error('Ошибка подключения:', error);
+                        connectionInfo.textContent = 'Ошибка подключения';
+                        connectionInfo.classList.add('connection-error');
+                        modelInfo.innerHTML = '<i class="fas fa-times-circle"></i> Сервер недоступен';
+                        modelInfo.style.color = '#ff3b30';
+                        
+                        alert(`Не удалось подключиться к ${connectionUrl}\n\nПроверьте:\n1. LM Studio запущен\n2. Сервер API активен\n3. Правильные IP и порт\n\nОшибка: ${error.message}`);
+                        updateConnectionStatus(false);
+                    } finally {
+                        connectBtn.disabled = false;
+                    }
+                }
+                
+                if (window.innerWidth <= 768) {
+                    closeSidebar();
+                }
+            }
+            
+            function clearConversationHistory() {
+                conversationHistory = [];
+                
+                const messages = chatMessages.querySelectorAll('.message');
+                messages.forEach(msg => {
+                    if (!msg.classList.contains('ai-message') || !msg.textContent.includes('Подключение установлено') && !msg.textContent.includes('Ожидание подключения')) {
+                        msg.remove();
+                    }
+                });
+                
+                if (welcomeMessage && !isConnected) {
+                    welcomeMessage.style.display = 'block';
+                }
+                
+                addMessage('ai-message', 'История чата очищена.', false);
+            }
+            
+            function toggleFileUpload() {
+                fileUploadContainer.classList.toggle('active');
+            }
+            
+            function handleFileSelect(files) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    
+                    if (file.size > 50 * 1024 * 1024) {
+                        alert(`Файл ${file.name} слишком большой (максимум 50MB)`);
+                        continue;
+                    }
+                    
+                    attachedFiles.push(file);
+                }
+                
+                updateFileList();
+            }
+            
+            loadSettings();
+            
+            connectBtn.addEventListener('click', toggleConnection);
+            
+            sendBtn.addEventListener('click', sendMessage);
+            
+            chatInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+            
+            chatInput.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+                
+                if (this.value.trim()) {
+                    sendBtn.disabled = false;
+                } else {
+                    sendBtn.disabled = !isConnected;
+                }
+            });
+            
+            clearContextBtn.addEventListener('click', clearConversationHistory);
+            
+            attachFileBtn.addEventListener('click', toggleFileUpload);
+            
+            closeUploadBtn.addEventListener('click', () => {
+                fileUploadContainer.classList.remove('active');
+            });
+            
+            fileDropArea.addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            fileDropArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                fileDropArea.style.borderColor = '#0088cc';
+                fileDropArea.style.backgroundColor = 'rgba(0, 136, 204, 0.1)';
+            });
+            
+            fileDropArea.addEventListener('dragleave', () => {
+                fileDropArea.style.borderColor = '#4d4d4d';
+                fileDropArea.style.backgroundColor = 'transparent';
+            });
+            
+            fileDropArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                fileDropArea.style.borderColor = '#4d4d4d';
+                fileDropArea.style.backgroundColor = 'transparent';
+                handleFileSelect(e.dataTransfer.files);
+            });
+            
+            fileInput.addEventListener('change', (e) => {
+                handleFileSelect(e.target.files);
+                fileInput.value = '';
+            });
+            
+            uploadButton.addEventListener('click', () => {
+                if (attachedFiles.length > 0) {
+                    fileUploadContainer.classList.remove('active');
+                }
+            });
+            
+            saveSettingsBtn.addEventListener('click', saveSettings);
+            
+            loadSettingsBtn.addEventListener('click', loadSettings);
+            
+            function openSidebar() {
+                sidebar.classList.add('active');
+                sidebarOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeSidebar() {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+            
+            mobileMenuBtn.addEventListener('click', openSidebar);
+            sidebarOverlay.addEventListener('click', closeSidebar);
+            
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    closeSidebar();
+                }
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!fileUploadContainer.contains(e.target) && 
+                    !attachFileBtn.contains(e.target) && 
+                    fileUploadContainer.classList.contains('active')) {
+                    fileUploadContainer.classList.remove('active');
+                }
+            });
+            
+            setTimeout(() => {
+                if (!isConnected) {
+                    addMessage('ai-message', 'Для начала работы подключитесь к серверу LM Studio через боковую панель.', false);
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
