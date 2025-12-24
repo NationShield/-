@@ -3,867 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connect Ai Bot Lm Studio</title>
+    <title>Connect Ai Bot</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #0a0a0a;
-            color: #e1e1e1;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .app-container {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            max-width: 100%;
-            margin: 0 auto;
-        }
-
-        .header {
-            background-color: #1a1a1a;
-            padding: 16px 20px;
-            border-bottom: 1px solid #2d2d2d;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
-            z-index: 10;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, #0088cc, #00a8ff);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .logo-icon i {
-            color: white;
-            font-size: 18px;
-        }
-
-        .logo-text {
-            font-size: 20px;
-            font-weight: 600;
-            background: linear-gradient(135deg, #0088cc, #00a8ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .connection-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            background-color: #2d2d2d;
-            border-radius: 20px;
-            font-size: 14px;
-        }
-
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: #ff3b30;
-        }
-
-        .status-dot.connected {
-            background-color: #34c759;
-            box-shadow: 0 0 8px #34c759;
-        }
-
-        .main-content {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        .sidebar {
-            width: 280px;
-            background-color: #1a1a1a;
-            border-right: 1px solid #2d2d2d;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .connection-form {
-            background-color: #2d2d2d;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .form-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: #e1e1e1;
-        }
-
-        .input-group {
-            margin-bottom: 16px;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 14px;
-            color: #999;
-            margin-bottom: 6px;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 12px 14px;
-            background-color: #3d3d3d;
-            border: 1px solid #4d4d4d;
-            border-radius: 8px;
-            color: #e1e1e1;
-            font-size: 15px;
-            transition: border 0.2s;
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: #0088cc;
-        }
-
-        .hidden-ip {
-            font-family: monospace;
-            letter-spacing: 2px;
-            color: #34c759;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .connect-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #0088cc, #0066aa);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .connect-btn:hover {
-            background: linear-gradient(135deg, #0099dd, #0077bb);
-            transform: translateY(-1px);
-        }
-
-        .connect-btn:active {
-            transform: translateY(0);
-        }
-
-        .connect-btn:disabled {
-            background: #3d3d3d;
-            color: #777;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .settings-section {
-            background-color: #2d2d2d;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .settings-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: #e1e1e1;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .instructions {
-            background-color: #2d2d2d;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .instructions h3 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #e1e1e1;
-        }
-
-        .instructions ol {
-            padding-left: 18px;
-            font-size: 14px;
-            color: #999;
-            line-height: 1.6;
-        }
-
-        .instructions li {
-            margin-bottom: 8px;
-        }
-
-        .chat-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background-color: #0a0a0a;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .chat-header {
-            background-color: #1a1a1a;
-            padding: 16px 20px;
-            border-bottom: 1px solid #2d2d2d;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .chat-avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #34c759, #2ecc71);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .chat-avatar i {
-            color: white;
-            font-size: 20px;
-        }
-
-        .chat-info h2 {
-            font-size: 18px;
-            font-weight: 600;
-            color: #e1e1e1;
-        }
-
-        .chat-info p {
-            font-size: 14px;
-            color: #999;
-            margin-top: 2px;
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            background-color: #0a0a0a;
-        }
-
-        .message {
-            max-width: 75%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            line-height: 1.5;
-            word-wrap: break-word;
-            position: relative;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .user-message {
-            align-self: flex-end;
-            background-color: #0088cc;
-            color: white;
-            border-bottom-right-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0, 136, 204, 0.3);
-        }
-
-        .ai-message {
-            align-self: flex-start;
-            background-color: #2d2d2d;
-            color: #e1e1e1;
-            border-bottom-left-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .message-time {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.6);
-            margin-top: 4px;
-            text-align: right;
-        }
-
-        .ai-message .message-time {
-            color: #999;
-        }
-
-        .typing-indicator {
-            align-self: flex-start;
-            background-color: #2d2d2d;
-            border-radius: 18px;
-            border-bottom-left-radius: 4px;
-            padding: 12px 16px;
-            display: none;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .typing-indicator.active {
-            display: flex;
-        }
-
-        .typing-dots {
-            display: flex;
-            gap: 4px;
-            align-items: center;
-        }
-
-        .typing-dots span {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: #999;
-            animation: typing 1.4s infinite ease-in-out both;
-        }
-
-        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
-        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
-
-        @keyframes typing {
-            0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
-            40% { transform: scale(1); opacity: 1; }
-        }
-
-        .chat-input-area {
-            padding: 16px 20px;
-            background-color: #1a1a1a;
-            border-top: 1px solid #2d2d2d;
-            display: flex;
-            gap: 12px;
-            align-items: flex-end;
-        }
-
-        .chat-input-wrapper {
-            flex: 1;
-            background-color: #2d2d2d;
-            border-radius: 20px;
-            padding: 8px 16px;
-            display: flex;
-            align-items: center;
-            border: 1px solid transparent;
-        }
-
-        .chat-input-wrapper:focus-within {
-            border-color: #0088cc;
-        }
-
-        .chat-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #e1e1e1;
-            font-size: 15px;
-            resize: none;
-            max-height: 120px;
-            min-height: 20px;
-            line-height: 1.4;
-            padding: 8px 0;
-        }
-
-        .chat-input:focus {
-            outline: none;
-        }
-
-        .chat-actions {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .action-button {
-            width: 44px;
-            height: 44px;
-            background: #3d3d3d;
-            border: none;
-            border-radius: 50%;
-            color: #e1e1e1;
-            font-size: 18px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            flex-shrink: 0;
-        }
-
-        .action-button:hover {
-            background: #4d4d4d;
-            transform: scale(1.05);
-        }
-
-        .send-button {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, #0088cc, #0066aa);
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            flex-shrink: 0;
-        }
-
-        .send-button:hover {
-            background: linear-gradient(135deg, #0099dd, #0077bb);
-            transform: scale(1.05);
-        }
-
-        .send-button:active {
-            transform: scale(1);
-        }
-
-        .send-button:disabled {
-            background: #3d3d3d;
-            color: #777;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: #e1e1e1;
-            font-size: 20px;
-            cursor: pointer;
-            padding: 8px;
-        }
-
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 100;
-        }
-
-        .sidebar-overlay.active {
-            display: block;
-        }
-
-        .clear-context-btn {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: #3d3d3d;
-            color: #e1e1e1;
-            border: 1px solid #4d4d4d;
-            border-radius: 8px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .clear-context-btn:hover {
-            background-color: #4d4d4d;
-            border-color: #ff3b30;
-            color: #ff3b30;
-        }
-
-        .file-upload-container {
-            display: none;
-            position: absolute;
-            bottom: 80px;
-            right: 20px;
-            width: 300px;
-            background-color: #2d2d2d;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            z-index: 50;
-            border: 1px solid #4d4d4d;
-        }
-
-        .file-upload-container.active {
-            display: block;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .file-upload-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .file-upload-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #e1e1e1;
-        }
-
-        .close-upload {
-            background: none;
-            border: none;
-            color: #999;
-            font-size: 20px;
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        .file-drop-area {
-            border: 2px dashed #4d4d4d;
-            border-radius: 10px;
-            padding: 40px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 15px;
-        }
-
-        .file-drop-area:hover {
-            border-color: #0088cc;
-            background-color: rgba(0, 136, 204, 0.05);
-        }
-
-        .file-drop-area i {
-            font-size: 48px;
-            color: #999;
-            margin-bottom: 15px;
-        }
-
-        .file-drop-text {
-            font-size: 14px;
-            color: #999;
-            margin-bottom: 10px;
-        }
-
-        .file-drop-subtext {
-            font-size: 12px;
-            color: #666;
-        }
-
-        .file-input {
-            display: none;
-        }
-
-        .file-list {
-            max-height: 200px;
-            overflow-y: auto;
-            margin-top: 15px;
-        }
-
-        .file-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            background-color: #3d3d3d;
-            border-radius: 8px;
-            margin-bottom: 8px;
-        }
-
-        .file-icon {
-            width: 36px;
-            height: 36px;
-            background-color: #4d4d4d;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 12px;
-            font-size: 18px;
-        }
-
-        .file-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .file-name {
-            font-size: 13px;
-            color: #e1e1e1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .file-size {
-            font-size: 11px;
-            color: #999;
-        }
-
-        .file-remove {
-            background: none;
-            border: none;
-            color: #ff3b30;
-            font-size: 16px;
-            cursor: pointer;
-            padding: 5px;
-            margin-left: 10px;
-        }
-
-        .upload-button {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #0088cc, #0066aa);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: all 0.2s;
-        }
-
-        .upload-button:hover {
-            background: linear-gradient(135deg, #0099dd, #0077bb);
-        }
-
-        .upload-button:disabled {
-            background: #3d3d3d;
-            color: #777;
-            cursor: not-allowed;
-        }
-
-        .message-files {
-            margin-top: 10px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .file-attachment {
-            display: inline-flex;
-            align-items: center;
-            padding: 8px 12px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            font-size: 13px;
-            color: #e1e1e1;
-            text-decoration: none;
-            transition: background-color 0.2s;
-        }
-
-        .file-attachment:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .file-attachment i {
-            margin-right: 6px;
-            color: #0088cc;
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                position: fixed;
-                top: 0;
-                left: -100%;
-                width: 280px;
-                height: 100%;
-                z-index: 101;
-                transition: left 0.3s ease;
-            }
-
-            .sidebar.active {
-                left: 0;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .logo-text {
-                font-size: 18px;
-            }
-
-            .message {
-                max-width: 85%;
-            }
-
-            .chat-input-area {
-                padding: 12px 16px;
-            }
-
-            .file-upload-container {
-                width: calc(100% - 40px);
-                right: 20px;
-                left: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header {
-                padding: 12px 16px;
-            }
-
-            .chat-header {
-                padding: 12px 16px;
-            }
-
-            .chat-messages {
-                padding: 16px;
-            }
-
-            .message {
-                max-width: 90%;
-                padding: 10px 14px;
-                font-size: 14px;
-            }
-
-            .message-time {
-                font-size: 10px;
-            }
-
-            .connection-form, .instructions, .settings-section {
-                padding: 16px;
-            }
-
-            .chat-actions {
-                gap: 5px;
-            }
-
-            .action-button, .send-button {
-                width: 40px;
-                height: 40px;
-            }
-        }
-
-        .welcome-message {
-            text-align: center;
-            padding: 40px 20px;
-            color: #999;
-            font-size: 15px;
-        }
-
-        .welcome-message i {
-            font-size: 48px;
-            margin-bottom: 16px;
-            color: #0088cc;
-            opacity: 0.7;
-        }
-
-        .connection-success {
-            color: #34c759;
-        }
-
-        .connection-error {
-            color: #ff3b30;
-        }
-
-        .connection-info-box {
-            margin-top: 15px;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
-            border-left: 3px solid #34c759;
-        }
-
-        .connection-info-title {
-            font-size: 12px;
-            color: #999;
-            margin-bottom: 5px;
-        }
-
-        .connection-info-details {
-            font-size: 13px;
-            color: #e1e1e1;
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-
-        .history-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .history-btn {
-            flex: 1;
-            padding: 8px;
-            background-color: #3d3d3d;
-            color: #e1e1e1;
-            border: 1px solid #4d4d4d;
-            border-radius: 8px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        .history-btn:hover {
-            background-color: #4d4d4d;
-            border-color: #0088cc;
-        }
-
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #1a1a1a;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #3d3d3d;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #4d4d4d;
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background-color:#0a0a0a;color:#e1e1e1;height:100vh;overflow:hidden}
+        .app-container{display:flex;flex-direction:column;height:100vh;max-width:100%;margin:0 auto}
+        .header{background-color:#1a1a1a;padding:12px 16px;border-bottom:1px solid #2d2d2d;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 10px rgba(0,0,0,0.3);z-index:10}
+        .logo{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+        .logo-icon{width:32px;height:32px;background:linear-gradient(135deg,#0088cc,#00a8ff);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .logo-icon i{color:white;font-size:16px}
+        .logo-text{font-size:16px;font-weight:600;background:linear-gradient(135deg,#0088cc,#00a8ff);-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .connection-status{display:flex;align-items:center;gap:6px;padding:6px 10px;background-color:#2d2d2d;border-radius:16px;font-size:12px;flex-shrink:0}
+        .status-dot{width:8px;height:8px;border-radius:50%;background-color:#ff3b30}
+        .status-dot.connected{background-color:#34c759;box-shadow:0 0 6px #34c759}
+        .status-dot.connecting{background-color:#ff9500;animation:pulse 1.5s infinite}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+        .main-content{display:flex;flex:1;overflow:hidden}
+        .sidebar{width:300px;background-color:#1a1a1a;border-right:1px solid #2d2d2d;padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:16px;transition:all 0.3s ease}
+        .connection-form{background-color:#2d2d2d;border-radius:12px;padding:16px;box-shadow:0 4px 12px rgba(0,0,0,0.2)}
+        .form-title{font-size:15px;font-weight:600;margin-bottom:14px;color:#e1e1e1;display:flex;align-items:center;gap:8px}
+        .form-title i{color:#0088cc}
+        .input-group{margin-bottom:14px}
+        .input-group label{display:block;font-size:13px;color:#999;margin-bottom:6px}
+        .input-group input{width:100%;padding:10px 12px;background-color:#3d3d3d;border:1px solid #4d4d4d;border-radius:8px;color:#e1e1e1;font-size:14px;transition:border 0.2s}
+        .input-group input:focus{outline:none;border-color:#0088cc}
+        .connect-btn{width:100%;padding:12px;background:linear-gradient(135deg,#0088cc,#0066aa);color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px}
+        .connect-btn:hover{background:linear-gradient(135deg,#0099dd,#0077bb)}
+        .connect-btn:active{transform:translateY(1px)}
+        .connect-btn:disabled{background:#3d3d3d;color:#777;cursor:not-allowed;transform:none}
+        .ai-settings{background-color:#2d2d2d;border-radius:12px;padding:16px;box-shadow:0 4px 12px rgba(0,0,0,0.2)}
+        .ai-settings-title{font-size:15px;font-weight:600;margin-bottom:14px;color:#e1e1e1;display:flex;align-items:center;gap:8px}
+        .ai-settings-title i{color:#ff9500}
+        .icon-selection{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+        .icon-option{width:40px;height:40px;background-color:#3d3d3d;border:2px solid #4d4d4d;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;font-size:18px;color:#e1e1e1}
+        .icon-option:hover{background-color:#4d4d4d;transform:scale(1.1)}
+        .icon-option.selected{background-color:#0088cc;border-color:#00a8ff;color:white;transform:scale(1.1)}
+        .icon-option.custom{position:relative;background:linear-gradient(45deg,#ff6b6b,#ffa8a8)}
+        .icon-option.custom i{font-size:16px}
+        .icon-input{width:100%;padding:10px 12px;background-color:#3d3d3d;border:1px solid #4d4d4d;border-radius:8px;color:#e1e1e1;font-size:14px;margin-bottom:14px;display:none}
+        .icon-input.show{display:block}
+        .instructions{background-color:#2d2d2d;border-radius:12px;padding:16px;box-shadow:0 4px 12px rgba(0,0,0,0.2)}
+        .instructions h3{font-size:15px;font-weight:600;margin-bottom:12px;color:#e1e1e1}
+        .instructions ol{padding-left:16px;font-size:13px;color:#999;line-height:1.5}
+        .instructions li{margin-bottom:6px}
+        .chat-container{flex:1;display:flex;flex-direction:column;background-color:#0a0a0a;position:relative;overflow:hidden}
+        .chat-header{background-color:#1a1a1a;padding:12px 16px;border-bottom:1px solid #2d2d2d;display:flex;align-items:center;gap:10px}
+        .chat-avatar{width:42px;height:42px;background:linear-gradient(135deg,#34c759,#2ecc71);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.3s}
+        .chat-avatar i{color:white;font-size:20px}
+        .chat-info{flex:1;min-width:0}
+        .chat-info h2{font-size:17px;font-weight:600;color:#e1e1e1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .chat-info p{font-size:13px;color:#999;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .clear-history-btn{background-color:#3d3d3d;color:#e1e1e1;border:1px solid #4d4d4d;border-radius:8px;padding:8px 12px;font-size:13px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:6px;margin-left:auto;flex-shrink:0}
+        .clear-history-btn:hover{background-color:#4d4d4d;border-color:#ff3b30;color:#ff3b30}
+        .chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;background-color:#0a0a0a}
+        .message{max-width:85%;padding:10px 14px;border-radius:16px;line-height:1.4;word-wrap:break-word;position:relative;animation:fadeIn 0.3s ease}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        .user-message{align-self:flex-end;background-color:#0088cc;color:white;border-bottom-right-radius:4px;box-shadow:0 2px 8px rgba(0,136,204,0.3)}
+        .ai-message{align-self:flex-start;background-color:#2d2d2d;color:#e1e1e1;border-bottom-left-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+        .message-time{font-size:10px;color:rgba(255,255,255,0.6);margin-top:4px;text-align:right}
+        .ai-message .message-time{color:#999}
+        .typing-indicator{align-self:flex-start;background-color:#2d2d2d;border-radius:16px;border-bottom-left-radius:4px;padding:10px 14px;display:none;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+        .typing-indicator.active{display:flex}
+        .typing-dots{display:flex;gap:3px;align-items:center}
+        .typing-dots span{width:6px;height:6px;border-radius:50%;background-color:#999;animation:typing 1.4s infinite ease-in-out both}
+        .typing-dots span:nth-child(1){animation-delay:-0.32s}
+        .typing-dots span:nth-child(2){animation-delay:-0.16s}
+        @keyframes typing{0%,80%,100%{transform:scale(0.6);opacity:0.5}40%{transform:scale(1);opacity:1}}
+        .chat-input-area{padding:12px 16px;background-color:#1a1a1a;border-top:1px solid #2d2d2d;display:flex;gap:10px;align-items:flex-end}
+        .chat-input-wrapper{flex:1;background-color:#2d2d2d;border-radius:20px;padding:6px 14px;display:flex;align-items:center;border:1px solid transparent}
+        .chat-input-wrapper:focus-within{border-color:#0088cc}
+        .chat-input{flex:1;background:transparent;border:none;color:#e1e1e1;font-size:14px;resize:none;max-height:100px;min-height:20px;line-height:1.4;padding:6px 0}
+        .chat-input:focus{outline:none}
+        .chat-actions{display:flex;gap:6px;align-items:center}
+        .send-button{width:40px;height:40px;background:linear-gradient(135deg,#0088cc,#0066aa);border:none;border-radius:50%;color:white;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0}
+        .send-button:hover{background:linear-gradient(135deg,#0099dd,#0077bb)}
+        .send-button:active{transform:scale(0.95)}
+        .send-button:disabled{background:#3d3d3d;color:#777;cursor:not-allowed;transform:none}
+        .mobile-menu-btn{display:none;background:none;border:none;color:#e1e1e1;font-size:18px;cursor:pointer;padding:6px;margin-right:8px}
+        .sidebar-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background-color:rgba(0,0,0,0.7);z-index:100}
+        .sidebar-overlay.active{display:block}
+        .error-message{background-color:rgba(255,59,48,0.1);border:1px solid rgba(255,59,48,0.3);border-radius:8px;padding:12px;margin-top:12px;font-size:12px;color:#ff7b72;display:none}
+        .error-message.show{display:block;animation:shake 0.5s ease}
+        @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+        .error-message i{margin-right:6px}
+        .retry-btn{background:rgba(255,59,48,0.2);border:1px solid rgba(255,59,48,0.5);color:#ff7b72;padding:6px 12px;border-radius:6px;font-size:11px;cursor:pointer;margin-top:8px;display:inline-flex;align-items:center;gap:4px;transition:all 0.2s}
+        .retry-btn:hover{background:rgba(255,59,48,0.3)}
+        .connection-info-box{margin-top:12px;padding:10px;background:rgba(0,0,0,0.3);border-radius:8px;border-left:3px solid #34c759;display:none}
+        .connection-info-box.show{display:block}
+        .connection-info-title{font-size:11px;color:#999;margin-bottom:4px}
+        .connection-info-details{font-size:12px;color:#e1e1e1;display:flex;flex-direction:column;gap:3px}
+        .connection-success{color:#34c759}
+        .connection-error{color:#ff3b30}
+        .custom-icon-input{display:none;margin-top:10px}
+        .custom-icon-input.show{display:block}
+        .custom-icon-input input{width:100%;padding:8px 12px;background-color:#3d3d3d;border:1px solid #4d4d4d;border-radius:6px;color:#e1e1e1;font-size:13px}
+        .welcome-message{text-align:center;padding:30px 16px;color:#999;font-size:14px}
+        .welcome-message i{font-size:36px;margin-bottom:12px;color:#0088cc;opacity:0.7}
+        .sidebar-header{display:none;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid #2d2d2d;margin-bottom:16px}
+        .sidebar-close-btn{background:none;border:none;color:#e1e1e1;font-size:20px;cursor:pointer;padding:4px}
+        ::-webkit-scrollbar{width:6px}
+        ::-webkit-scrollbar-track{background:#1a1a1a}
+        ::-webkit-scrollbar-thumb{background:#3d3d3d;border-radius:3px}
+        ::-webkit-scrollbar-thumb:hover{background:#4d4d4d}
+        
+        @media (max-width:768px){
+            .sidebar{position:fixed;top:0;left:-100%;width:100%;height:100%;z-index:101;transition:left 0.3s ease;padding:16px}
+            .sidebar.active{left:0}
+            .sidebar-header{display:flex}
+            .mobile-menu-btn{display:block}
+            .logo-text{font-size:15px}
+            .message{max-width:90%;padding:8px 12px;font-size:14px}
+            .chat-input-area{padding:10px 14px}
+            .connection-status{font-size:11px;padding:5px 8px}
+            .clear-history-btn{padding:6px 10px;font-size:12px}
+            .icon-selection{grid-template-columns:repeat(5,1fr)}
+        }
+        @media (max-width:480px){
+            .header{padding:10px 14px}
+            .chat-header{padding:10px 14px}
+            .chat-messages{padding:14px;gap:10px}
+            .message{max-width:92%;padding:8px 10px;font-size:13px}
+            .message-time{font-size:9px}
+            .connection-form,.instructions,.ai-settings{padding:14px}
+            .chat-actions{gap:5px}
+            .send-button{width:38px;height:38px;font-size:15px}
+            .logo-icon{width:30px;height:30px}
+            .logo-text{font-size:14px}
+            .clear-history-btn{padding:5px 8px;font-size:11px}
+            .icon-selection{grid-template-columns:repeat(4,1fr);gap:6px}
+            .icon-option{width:36px;height:36px;font-size:16px}
+        }
+        @media (max-width:360px){
+            .logo-text{font-size:13px}
+            .connection-status{font-size:10px}
+            .mobile-menu-btn{font-size:16px;padding:4px;margin-right:4px}
+            .clear-history-btn{padding:4px 6px;font-size:10px}
+            .icon-selection{grid-template-columns:repeat(3,1fr)}
         }
     </style>
 </head>
@@ -878,7 +154,7 @@
                 <div class="logo-icon">
                     <i class="fas fa-robot"></i>
                 </div>
-                <div class="logo-text">Connect Ai Bot Lm Studio</div>
+                <div class="logo-text">Connect Ai Bot</div>
             </div>
             
             <div class="connection-status">
@@ -889,16 +165,26 @@
         
         <div class="main-content">
             <div class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <h3>Настройки подключения</h3>
+                    <button class="sidebar-close-btn" id="sidebar-close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
                 <div class="connection-form">
-                    <h3 class="form-title">Подключение к серверу</h3>
+                    <h3 class="form-title">
+                        <i class="fas fa-plug"></i>
+                        Подключение к серверу
+                    </h3>
                     
                     <div class="input-group">
-                        <label for="ip-address">IP-адрес</label>
-                        <input type="text" id="ip-address" placeholder="127.0.0.1">
+                        <label for="ip-address">IP-адрес сервера</label>
+                        <input type="text" id="ip-address" placeholder="Например: 127.0.0.1 или 26.24.239.213">
                     </div>
                     
                     <div class="input-group">
-                        <label for="port">Порт</label>
+                        <label for="port">Порт сервера</label>
                         <input type="number" id="port" placeholder="1234" min="1" max="65535">
                     </div>
                     
@@ -907,52 +193,95 @@
                         <span>Подключиться</span>
                     </button>
                     
-                    <div class="connection-info-box" id="connection-display" style="display: none;">
-                        <div class="connection-info-title">Текущее подключение:</div>
+                    <div class="error-message" id="error-message">
+                        <div>
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span id="error-text">Не удалось подключиться к серверу</span>
+                        </div>
+                        <button class="retry-btn" id="retry-btn">
+                            <i class="fas fa-redo"></i>
+                            Попробовать снова
+                        </button>
+                    </div>
+                    
+                    <div class="connection-info-box" id="connection-info-box">
+                        <div class="connection-info-title">Подключено к:</div>
                         <div class="connection-info-details">
-                            <div>IP: <span class="hidden-ip" id="hidden-ip-display">127.*.*.*</span></div>
-                            <div>Порт: <span id="port-display">1234</span></div>
-                            <div id="model-info" style="font-size: 12px; color: #34c759; margin-top: 5px;">
-                                <i class="fas fa-check-circle"></i> Сервер доступен
-                            </div>
+                            <div>Сервер: <span id="server-info">127.0.0.1:1234</span></div>
+                            <div>Статус: <span class="connection-success" id="connection-details">Активно</span></div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="settings-section">
-                    <h3 class="settings-title">
-                        <i class="fas fa-history"></i>
-                        История подключений
+                <div class="ai-settings">
+                    <h3 class="ai-settings-title">
+                        <i class="fas fa-cog"></i>
+                        Настройки AI
                     </h3>
                     
-                    <div class="history-buttons">
-                        <button class="history-btn" id="save-settings-btn">
-                            <i class="fas fa-save"></i> Сохранить
-                        </button>
-                        <button class="history-btn" id="load-settings-btn">
-                            <i class="fas fa-history"></i> Загрузить
-                        </button>
+                    <div class="input-group">
+                        <label for="ai-name">Имя AI</label>
+                        <input type="text" id="ai-name" placeholder="Например: LM Studio AI или Друг">
                     </div>
                     
-                    <button class="clear-context-btn" id="clear-context-btn">
-                        <i class="fas fa-trash"></i>
-                        Очистить историю чата
+                    <div class="input-group">
+                        <label for="ai-role">Роль AI</label>
+                        <input type="text" id="ai-role" placeholder="Например: Помощник, Друг, Эксперт">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Иконка AI</label>
+                        <div class="icon-selection" id="icon-selection">
+                            <div class="icon-option selected" data-icon="fas fa-brain">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="icon-option" data-icon="fas fa-robot">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="icon-option" data-icon="fas fa-user-circle">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="icon-option" data-icon="fas fa-user-tie">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div class="icon-option" data-icon="fas fa-graduation-cap">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="icon-option" data-icon="fas fa-code">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="icon-option" data-icon="fas fa-gamepad">
+                                <i class="fas fa-gamepad"></i>
+                            </div>
+                            <div class="icon-option custom" data-icon="custom">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <div class="custom-icon-input" id="custom-icon-input">
+                            <input type="text" id="custom-icon-text" placeholder="Код иконки FontAwesome (например: fas fa-star)">
+                        </div>
+                    </div>
+                    
+                    <button class="connect-btn" id="save-ai-settings">
+                        <i class="fas fa-save"></i>
+                        <span>Сохранить настройки AI</span>
                     </button>
-                    
-                    <div style="margin-top: 15px; font-size: 12px; color: #999; text-align: center;">
-                        <i class="fas fa-info-circle"></i> Настройки сохраняются автоматически
-                    </div>
                 </div>
                 
                 <div class="instructions">
-                    <h3>Инструкция по подключению</h3>
+                    <h3>Как подключиться:</h3>
                     <ol>
                         <li>Запустите LM Studio</li>
                         <li>Загрузите модель</li>
-                        <li>Перейдите во вкладку "Local Server"</li>
-                        <li>Запустите сервер API</li>
-                        <li>Введите данные и подключитесь</li>
+                        <li>Перейдите в "Local Server"</li>
+                        <li>Нажмите "Start Server"</li>
+                        <li>Введите IP и порт</li>
+                        <li>Настройте AI как хотите</li>
+                        <li>Нажмите "Подключиться"</li>
                     </ol>
+                    <p style="margin-top:10px;font-size:12px;color:#666">
+                        <i class="fas fa-info-circle"></i> Назовите AI как хотите: "Друг", "Помощник" и т.д.
+                    </p>
                 </div>
             </div>
             
@@ -960,19 +289,23 @@
             
             <div class="chat-container">
                 <div class="chat-header">
-                    <div class="chat-avatar">
+                    <div class="chat-avatar" id="chat-avatar">
                         <i class="fas fa-brain"></i>
                     </div>
                     <div class="chat-info">
-                        <h2>LM Studio AI</h2>
+                        <h2 id="ai-name-display">LM Studio AI</h2>
                         <p id="connection-info">Ожидание подключения...</p>
                     </div>
+                    <button class="clear-history-btn" id="clear-history-btn" title="Очистить историю">
+                        <i class="fas fa-trash"></i>
+                        Очистить
+                    </button>
                 </div>
                 
                 <div class="chat-messages" id="chat-messages">
                     <div class="welcome-message" id="welcome-message">
                         <i class="fas fa-robot"></i>
-                        <p>Подключитесь к серверу LM Studio, чтобы начать общение с AI</p>
+                        <p>Подключитесь к серверу LM Studio, чтобы начать общение</p>
                     </div>
                 </div>
                 
@@ -984,33 +317,11 @@
                     </div>
                 </div>
                 
-                <div class="file-upload-container" id="file-upload-container">
-                    <div class="file-upload-header">
-                        <div class="file-upload-title">Загрузить файлы</div>
-                        <button class="close-upload" id="close-upload">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="file-drop-area" id="file-drop-area">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <div class="file-drop-text">Перетащите файлы сюда</div>
-                        <div class="file-drop-subtext">или нажмите для выбора</div>
-                        <input type="file" class="file-input" id="file-input" multiple>
-                    </div>
-                    <div class="file-list" id="file-list"></div>
-                    <button class="upload-button" id="upload-button">
-                        <i class="fas fa-upload"></i> Прикрепить файлы
-                    </button>
-                </div>
-                
                 <div class="chat-input-area">
                     <div class="chat-input-wrapper">
-                        <textarea class="chat-input" id="chat-input" placeholder="Введите сообщение..." rows="1" disabled></textarea>
+                        <textarea class="chat-input" id="chat-input" placeholder="Напишите сообщение..." rows="1" disabled></textarea>
                     </div>
                     <div class="chat-actions">
-                        <button class="action-button" id="attach-file-btn">
-                            <i class="fas fa-paperclip"></i>
-                        </button>
                         <button class="send-button" id="send-btn" disabled>
                             <i class="fas fa-paper-plane"></i>
                         </button>
@@ -1021,543 +332,443 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const ipAddressInput = document.getElementById('ip-address');
-            const portInput = document.getElementById('port');
-            const connectBtn = document.getElementById('connect-btn');
-            const statusDot = document.getElementById('status-dot');
-            const statusText = document.getElementById('status-text');
-            const chatMessages = document.getElementById('chat-messages');
-            const chatInput = document.getElementById('chat-input');
-            const sendBtn = document.getElementById('send-btn');
-            const typingIndicator = document.getElementById('typing-indicator');
-            const connectionInfo = document.getElementById('connection-info');
-            const welcomeMessage = document.getElementById('welcome-message');
-            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-            const sidebar = document.getElementById('sidebar');
-            const sidebarOverlay = document.getElementById('sidebar-overlay');
-            const clearContextBtn = document.getElementById('clear-context-btn');
-            const connectionDisplay = document.getElementById('connection-display');
-            const hiddenIpDisplay = document.getElementById('hidden-ip-display');
-            const portDisplay = document.getElementById('port-display');
-            const modelInfo = document.getElementById('model-info');
-            const attachFileBtn = document.getElementById('attach-file-btn');
-            const fileUploadContainer = document.getElementById('file-upload-container');
-            const closeUploadBtn = document.getElementById('close-upload');
-            const fileDropArea = document.getElementById('file-drop-area');
-            const fileInput = document.getElementById('file-input');
-            const fileList = document.getElementById('file-list');
-            const uploadButton = document.getElementById('upload-button');
-            const saveSettingsBtn = document.getElementById('save-settings-btn');
-            const loadSettingsBtn = document.getElementById('load-settings-btn');
+        document.addEventListener('DOMContentLoaded',function(){
+            const ipAddressInput=document.getElementById('ip-address')
+            const portInput=document.getElementById('port')
+            const connectBtn=document.getElementById('connect-btn')
+            const statusDot=document.getElementById('status-dot')
+            const statusText=document.getElementById('status-text')
+            const chatMessages=document.getElementById('chat-messages')
+            const chatInput=document.getElementById('chat-input')
+            const sendBtn=document.getElementById('send-btn')
+            const typingIndicator=document.getElementById('typing-indicator')
+            const connectionInfo=document.getElementById('connection-info')
+            const welcomeMessage=document.getElementById('welcome-message')
+            const mobileMenuBtn=document.getElementById('mobile-menu-btn')
+            const sidebar=document.getElementById('sidebar')
+            const sidebarOverlay=document.getElementById('sidebar-overlay')
+            const clearHistoryBtn=document.getElementById('clear-history-btn')
+            const errorMessage=document.getElementById('error-message')
+            const errorText=document.getElementById('error-text')
+            const retryBtn=document.getElementById('retry-btn')
+            const connectionInfoBox=document.getElementById('connection-info-box')
+            const serverInfo=document.getElementById('server-info')
+            const connectionDetails=document.getElementById('connection-details')
+            const aiNameInput=document.getElementById('ai-name')
+            const aiRoleInput=document.getElementById('ai-role')
+            const aiNameDisplay=document.getElementById('ai-name-display')
+            const chatAvatar=document.getElementById('chat-avatar')
+            const iconSelection=document.getElementById('icon-selection')
+            const customIconInput=document.getElementById('custom-icon-input')
+            const customIconText=document.getElementById('custom-icon-text')
+            const saveAiSettingsBtn=document.getElementById('save-ai-settings')
+            const iconOptions=document.querySelectorAll('.icon-option')
+            const sidebarCloseBtn=document.getElementById('sidebar-close-btn')
             
-            let isConnected = false;
-            let connectionUrl = '';
-            let conversationHistory = [];
-            let attachedFiles = [];
+            let isConnected=false
+            let connectionUrl=''
+            let conversationHistory=[]
+            let currentSettings={ip:'127.0.0.1',port:'1234'}
+            let aiSettings={name:'LM Studio AI',role:'Помощник',icon:'fas fa-brain',iconClass:'fas fa-brain'}
+            let reconnectAttempts=0
+            const MAX_RECONNECT_ATTEMPTS=3
             
-            function loadSettings() {
-                const savedIp = localStorage.getItem('lmStudioIp');
-                const savedPort = localStorage.getItem('lmStudioPort');
-                
-                if (savedIp) ipAddressInput.value = savedIp;
-                if (savedPort) portInput.value = savedPort;
-                
-                console.log('Загружены сохраненные настройки:', savedIp, savedPort);
-            }
-            
-            function saveSettings() {
-                const ip = ipAddressInput.value.trim();
-                const port = portInput.value.trim();
-                
-                if (ip) localStorage.setItem('lmStudioIp', ip);
-                if (port) localStorage.setItem('lmStudioPort', port);
-                
-                console.log('Сохранены настройки:', ip, port);
-                alert('Настройки сохранены!');
-            }
-            
-            function hideIpAddress(ip) {
-                const parts = ip.split('.');
-                if (parts.length === 4) {
-                    return `${parts[0]}.*.*.*`;
+            function isValidIP(ip){
+                const ipv4Regex=/^(\d{1,3}\.){3}\d{1,3}$/
+                if(!ipv4Regex.test(ip))return false
+                const parts=ip.split('.')
+                for(let part of parts){
+                    const num=parseInt(part,10)
+                    if(num<0||num>255)return false
+                    if(part.length>1&&part[0]==='0')return false
                 }
-                return ip;
+                return true
             }
             
-            function updateConnectionStatus(connected, ip = '', port = '') {
-                isConnected = connected;
-                
-                if (connected) {
-                    statusDot.classList.add('connected');
-                    statusText.textContent = 'Подключено';
-                    connectBtn.innerHTML = '<i class="fas fa-unplug"></i><span>Отключиться</span>';
-                    chatInput.disabled = false;
-                    sendBtn.disabled = false;
-                    chatInput.placeholder = 'Сообщение...';
-                    connectionInfo.textContent = `Подключено к порту: ${port}`;
-                    connectionInfo.classList.add('connection-success');
-                    connectionInfo.classList.remove('connection-error');
-                    
-                    connectionDisplay.style.display = 'block';
-                    hiddenIpDisplay.textContent = hideIpAddress(ip);
-                    portDisplay.textContent = port;
-                    
-                    if (welcomeMessage) {
-                        welcomeMessage.style.display = 'none';
-                    }
-                    
-                    addMessage('ai-message', 'Подключение установлено! Готов к общению.', false);
-                } else {
-                    statusDot.classList.remove('connected');
-                    statusText.textContent = 'Не подключено';
-                    connectBtn.innerHTML = '<i class="fas fa-plug"></i><span>Подключиться</span>';
-                    chatInput.disabled = true;
-                    sendBtn.disabled = true;
-                    chatInput.placeholder = 'Сначала подключитесь...';
-                    connectionInfo.textContent = 'Ожидание подключения...';
-                    connectionInfo.classList.remove('connection-success');
-                    connectionInfo.classList.remove('connection-error');
-                    connectionUrl = '';
-                    
-                    connectionDisplay.style.display = 'none';
-                    
-                    if (welcomeMessage && chatMessages.children.length <= 2) {
-                        welcomeMessage.style.display = 'block';
-                    }
+            function loadSettings(){
+                const savedIp=localStorage.getItem('lmStudioIp')
+                const savedPort=localStorage.getItem('lmStudioPort')
+                if(savedIp&&isValidIP(savedIp))currentSettings.ip=savedIp
+                if(savedPort)currentSettings.port=savedPort
+                ipAddressInput.value=currentSettings.ip
+                portInput.value=currentSettings.port
+                const savedAiName=localStorage.getItem('aiName')
+                const savedAiRole=localStorage.getItem('aiRole')
+                const savedAiIcon=localStorage.getItem('aiIcon')
+                const savedAiIconClass=localStorage.getItem('aiIconClass')
+                if(savedAiName)aiSettings.name=savedAiName
+                if(savedAiRole)aiSettings.role=savedAiRole
+                if(savedAiIcon)aiSettings.icon=savedAiIcon
+                if(savedAiIconClass)aiSettings.iconClass=savedAiIconClass
+                aiNameInput.value=aiSettings.name
+                aiRoleInput.value=aiSettings.role
+                applyAiSettings()
+            }
+            
+            function saveConnectionSettings(){
+                const ip=ipAddressInput.value.trim()
+                const port=portInput.value.trim()
+                if(ip&&port&&isValidIP(ip)){
+                    localStorage.setItem('lmStudioIp',ip)
+                    localStorage.setItem('lmStudioPort',port)
+                    currentSettings={ip,port}
                 }
             }
             
-            function getFileIcon(filename) {
-                const ext = filename.split('.').pop().toLowerCase();
-                const icons = {
-                    'jpg': 'fas fa-image',
-                    'jpeg': 'fas fa-image',
-                    'png': 'fas fa-image',
-                    'gif': 'fas fa-image',
-                    'bmp': 'fas fa-image',
-                    'svg': 'fas fa-image',
-                    'pdf': 'fas fa-file-pdf',
-                    'doc': 'fas fa-file-word',
-                    'docx': 'fas fa-file-word',
-                    'xls': 'fas fa-file-excel',
-                    'xlsx': 'fas fa-file-excel',
-                    'ppt': 'fas fa-file-powerpoint',
-                    'pptx': 'fas fa-file-powerpoint',
-                    'txt': 'fas fa-file-alt',
-                    'zip': 'fas fa-file-archive',
-                    'rar': 'fas fa-file-archive',
-                    '7z': 'fas fa-file-archive',
-                    'mp3': 'fas fa-file-audio',
-                    'wav': 'fas fa-file-audio',
-                    'mp4': 'fas fa-file-video',
-                    'avi': 'fas fa-file-video',
-                    'mkv': 'fas fa-file-video'
-                };
-                return icons[ext] || 'fas fa-file';
+            function saveAiSettings(){
+                const name=aiNameInput.value.trim()||'LM Studio AI'
+                const role=aiRoleInput.value.trim()||'Помощник'
+                aiSettings.name=name
+                aiSettings.role=role
+                localStorage.setItem('aiName',name)
+                localStorage.setItem('aiRole',role)
+                localStorage.setItem('aiIcon',aiSettings.icon)
+                localStorage.setItem('aiIconClass',aiSettings.iconClass)
+                applyAiSettings()
+                showNotification('Настройки AI сохранены!')
             }
             
-            function formatFileSize(bytes) {
-                if (bytes === 0) return '0 Bytes';
-                const k = 1024;
-                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-                const i = Math.floor(Math.log(bytes) / Math.log(k));
-                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            function applyAiSettings(){
+                aiNameDisplay.textContent=aiSettings.name
+                connectionInfo.textContent=isConnected?`Подключено как ${aiSettings.role}`:'Ожидание подключения...'
+                const avatarIcon=chatAvatar.querySelector('i')
+                avatarIcon.className=aiSettings.iconClass
+                setAvatarGradient(aiSettings.icon)
             }
             
-            function updateFileList() {
-                fileList.innerHTML = '';
-                
-                if (attachedFiles.length === 0) {
-                    fileList.innerHTML = '<div style="text-align: center; color: #999; padding: 20px; font-size: 14px;">Нет выбранных файлов</div>';
-                    uploadButton.disabled = true;
-                    return;
+            function setAvatarGradient(iconType){
+                const gradients={
+                    'fas fa-brain':'linear-gradient(135deg,#34c759,#2ecc71)',
+                    'fas fa-robot':'linear-gradient(135deg,#007aff,#5856d6)',
+                    'fas fa-user-circle':'linear-gradient(135deg,#ff2d55,#ff375f)',
+                    'fas fa-user-tie':'linear-gradient(135deg,#5ac8fa,#007aff)',
+                    'fas fa-graduation-cap':'linear-gradient(135deg,#ff9500,#ffcc00)',
+                    'fas fa-code':'linear-gradient(135deg,#5856d6,#af52de)',
+                    'fas fa-gamepad':'linear-gradient(135deg,#ff3b30,#ff9500)',
+                    'default':'linear-gradient(135deg,#34c759,#2ecc71)'
                 }
-                
-                uploadButton.disabled = false;
-                
-                attachedFiles.forEach((file, index) => {
-                    const fileItem = document.createElement('div');
-                    fileItem.className = 'file-item';
-                    
-                    const fileIcon = document.createElement('div');
-                    fileIcon.className = 'file-icon';
-                    const icon = document.createElement('i');
-                    icon.className = getFileIcon(file.name);
-                    fileIcon.appendChild(icon);
-                    
-                    const fileInfo = document.createElement('div');
-                    fileInfo.className = 'file-info';
-                    
-                    const fileName = document.createElement('div');
-                    fileName.className = 'file-name';
-                    fileName.textContent = file.name;
-                    
-                    const fileSize = document.createElement('div');
-                    fileSize.className = 'file-size';
-                    fileSize.textContent = formatFileSize(file.size);
-                    
-                    fileInfo.appendChild(fileName);
-                    fileInfo.appendChild(fileSize);
-                    
-                    const fileRemove = document.createElement('button');
-                    fileRemove.className = 'file-remove';
-                    fileRemove.innerHTML = '<i class="fas fa-times"></i>';
-                    fileRemove.onclick = () => {
-                        attachedFiles.splice(index, 1);
-                        updateFileList();
-                    };
-                    
-                    fileItem.appendChild(fileIcon);
-                    fileItem.appendChild(fileInfo);
-                    fileItem.appendChild(fileRemove);
-                    fileList.appendChild(fileItem);
-                });
+                const gradient=gradients[iconType]||gradients['default']
+                chatAvatar.style.background=gradient
             }
             
-            function attachFilesToMessage(message) {
-                if (attachedFiles.length === 0) return message;
-                
-                let fileInfo = '\n\n📎 Прикрепленные файлы:';
-                attachedFiles.forEach(file => {
-                    fileInfo += `\n📄 ${file.name} (${formatFileSize(file.size)})`;
-                });
-                
-                return message + fileInfo;
-            }
-            
-            function addMessage(type, text, saveToHistory = true, files = []) {
-                if (welcomeMessage && welcomeMessage.style.display !== 'none') {
-                    welcomeMessage.style.display = 'none';
-                }
-                
-                const messageDiv = document.createElement('div');
-                messageDiv.classList.add('message', type);
-                
-                const messageText = document.createElement('div');
-                messageText.textContent = text;
-                messageDiv.appendChild(messageText);
-                
-                if (files && files.length > 0) {
-                    const filesDiv = document.createElement('div');
-                    filesDiv.className = 'message-files';
-                    
-                    files.forEach(file => {
-                        const fileLink = document.createElement('a');
-                        fileLink.className = 'file-attachment';
-                        fileLink.href = '#';
-                        fileLink.innerHTML = `<i class="${getFileIcon(file.name)}"></i>${file.name}`;
-                        fileLink.onclick = (e) => {
-                            e.preventDefault();
-                            const blob = new Blob([file], { type: file.type });
-                            const url = URL.createObjectURL(blob);
-                            const a = document.createElement('a');
-                            a.href = url;
-                            a.download = file.name;
-                            document.body.appendChild(a);
-                            a.click();
-                            document.body.removeChild(a);
-                            URL.revokeObjectURL(url);
-                        };
-                        filesDiv.appendChild(fileLink);
-                    });
-                    
-                    messageDiv.appendChild(filesDiv);
-                }
-                
-                const timeDiv = document.createElement('div');
-                timeDiv.classList.add('message-time');
-                
-                const now = new Date();
-                const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
-                                 now.getMinutes().toString().padStart(2, '0');
-                timeDiv.textContent = timeString;
-                
-                messageDiv.appendChild(timeDiv);
-                chatMessages.appendChild(messageDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-                
-                if (saveToHistory) {
-                    if (type === 'user-message') {
-                        conversationHistory.push({
-                            role: 'user',
-                            content: text,
-                            files: files.map(f => f.name)
-                        });
-                    } else if (type === 'ai-message') {
-                        conversationHistory.push({
-                            role: 'assistant',
-                            content: text
-                        });
-                    }
-                    
-                    if (conversationHistory.length > 20) {
-                        conversationHistory = conversationHistory.slice(-20);
-                    }
+            function showNotification(message){
+                const notification=document.createElement('div')
+                notification.style.cssText='position:fixed;top:20px;right:20px;background:#34c759;color:white;padding:12px 20px;border-radius:8px;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.3);animation:slideIn 0.3s ease'
+                notification.innerHTML=`<div style="display:flex;align-items:center;gap:8px"><i class="fas fa-check-circle"></i><span>${message}</span></div>`
+                document.body.appendChild(notification)
+                setTimeout(()=>{
+                    notification.style.animation='slideOut 0.3s ease'
+                    setTimeout(()=>{if(notification.parentNode)notification.parentNode.removeChild(notification)},300)
+                },3000)
+                if(!document.querySelector('#notification-styles')){
+                    const style=document.createElement('style')
+                    style.id='notification-styles'
+                    style.textContent='@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}@keyframes slideOut{from{transform:translateX(0);opacity:1}to{transform:translateX(100%);opacity:0}}'
+                    document.head.appendChild(style)
                 }
             }
             
-            function buildSimpleMessage(userMessage) {
-                return {
-                    model: 'local-model',
-                    messages: [
-                        {
-                            role: 'user',
-                            content: userMessage
-                        }
-                    ],
-                    temperature: 0.7,
-                    max_tokens: 500,
-                    stream: false
-                };
+            function showError(message){
+                errorText.textContent=message
+                errorMessage.classList.add('show')
+                connectionInfoBox.classList.remove('show')
+                statusDot.classList.remove('connected','connecting')
+                statusText.textContent='Ошибка'
+                connectionInfo.textContent=message
+                connectionInfo.classList.remove('connection-success')
+                connectionInfo.classList.add('connection-error')
             }
             
-            async function sendMessage() {
-                const message = chatInput.value.trim();
-                if (!message || !isConnected) return;
-                
-                const messageWithFiles = attachFilesToMessage(message);
-                addMessage('user-message', message, true, [...attachedFiles]);
-                chatInput.value = '';
-                chatInput.style.height = 'auto';
-                
-                attachedFiles = [];
-                updateFileList();
-                fileUploadContainer.classList.remove('active');
-                
-                typingIndicator.classList.add('active');
-                
-                try {
-                    const payload = buildSimpleMessage(messageWithFiles);
-                    
-                    const response = await fetch(`${connectionUrl}/v1/chat/completions`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(payload)
-                    });
-                    
-                    if (!response.ok) {
-                        const errorText = await response.text();
-                        throw new Error(`Ошибка ${response.status}: ${errorText.substring(0, 100)}`);
-                    }
-                    
-                    const data = await response.json();
-                    const aiResponse = data.choices[0].message.content;
-                    
-                    addMessage('ai-message', aiResponse);
-                } catch (error) {
-                    console.error('Ошибка:', error);
-                    
-                    if (error.message.includes('400')) {
-                        addMessage('ai-message', 'Ошибка формата запроса. Попробуйте отправить сообщение снова или очистить историю.');
-                        modelInfo.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Ошибка формата запроса';
-                        modelInfo.style.color = '#ff3b30';
-                    } else {
-                        addMessage('ai-message', `Ошибка подключения: ${error.message}`);
-                        connectionInfo.textContent = 'Ошибка подключения';
-                        connectionInfo.classList.add('connection-error');
-                    }
-                } finally {
-                    typingIndicator.classList.remove('active');
+            function hideError(){
+                errorMessage.classList.remove('show')
+            }
+            
+            function showConnectionInfo(){
+                serverInfo.textContent=`${currentSettings.ip}:${currentSettings.port}`
+                connectionInfoBox.classList.add('show')
+                hideError()
+            }
+            
+            function updateConnectionStatus(connected,connecting=false){
+                isConnected=connected
+                if(connecting){
+                    statusDot.className='status-dot connecting'
+                    statusText.textContent='Подключение...'
+                    connectBtn.disabled=true
+                    chatInput.disabled=true
+                    sendBtn.disabled=true
+                    chatInput.placeholder='Подключаемся...'
+                    connectionInfo.textContent='Подключаемся к серверу...'
+                    connectionInfo.classList.remove('connection-success','connection-error')
+                    return
+                }
+                if(connected){
+                    statusDot.className='status-dot connected'
+                    statusText.textContent='Подключено'
+                    connectBtn.innerHTML='<i class="fas fa-unplug"></i><span>Отключиться</span>'
+                    chatInput.disabled=false
+                    sendBtn.disabled=false
+                    chatInput.placeholder='Напишите сообщение...'
+                    connectionInfo.textContent=`Подключено как ${aiSettings.role}`
+                    connectionInfo.classList.add('connection-success')
+                    connectionInfo.classList.remove('connection-error')
+                    connectionDetails.textContent='Активно'
+                    connectionDetails.className='connection-success'
+                    if(welcomeMessage)welcomeMessage.style.display='none'
+                    addMessage('ai-message',`✅ Подключение успешно установлено! Я ваш ${aiSettings.role.toLowerCase()} ${aiSettings.name}. Готов помочь!`,false)
+                    saveConnectionSettings()
+                    showConnectionInfo()
+                    reconnectAttempts=0
+                }else{
+                    statusDot.className='status-dot'
+                    statusText.textContent='Не подключено'
+                    connectBtn.innerHTML='<i class="fas fa-plug"></i><span>Подключиться</span>'
+                    chatInput.disabled=true
+                    sendBtn.disabled=true
+                    chatInput.placeholder='Сначала подключитесь...'
+                    connectionInfo.textContent=`Ожидание подключения (${aiSettings.role})`
+                    connectionInfo.classList.remove('connection-success','connection-error')
+                    connectionInfoBox.classList.remove('show')
+                    connectBtn.disabled=false
+                    if(welcomeMessage&&chatMessages.children.length<=2)welcomeMessage.style.display='block'
                 }
             }
             
-            async function toggleConnection() {
-                if (isConnected) {
-                    updateConnectionStatus(false);
-                    addMessage('ai-message', 'Подключение разорвано.', false);
-                } else {
-                    const ip = ipAddressInput.value.trim();
-                    const port = portInput.value.trim();
-                    
-                    if (!ip || !port) {
-                        alert('Введите IP-адрес и порт');
-                        return;
+            function addMessage(type,text,saveToHistory=true){
+                if(welcomeMessage&&welcomeMessage.style.display!=='none')welcomeMessage.style.display='none'
+                const messageDiv=document.createElement('div')
+                messageDiv.classList.add('message',type)
+                const messageText=document.createElement('div')
+                messageText.textContent=text
+                messageDiv.appendChild(messageText)
+                const timeDiv=document.createElement('div')
+                timeDiv.classList.add('message-time')
+                const now=new Date()
+                const timeString=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0')
+                timeDiv.textContent=timeString
+                messageDiv.appendChild(timeDiv)
+                chatMessages.appendChild(messageDiv)
+                chatMessages.scrollTop=chatMessages.scrollHeight
+                if(saveToHistory){
+                    if(type==='user-message')conversationHistory.push({role:'user',content:text})
+                    else if(type==='ai-message')conversationHistory.push({role:'assistant',content:text})
+                    if(conversationHistory.length>20)conversationHistory=conversationHistory.slice(-20)
+                }
+            }
+            
+            function buildSimpleMessage(userMessage){
+                return{model:'local-model',messages:[{role:'user',content:userMessage}],temperature:0.7,max_tokens:500,stream:false}
+            }
+            
+            async function sendMessage(){
+                const message=chatInput.value.trim()
+                if(!message||!isConnected)return
+                addMessage('user-message',message)
+                chatInput.value=''
+                chatInput.style.height='auto'
+                typingIndicator.classList.add('active')
+                try{
+                    const payload=buildSimpleMessage(message)
+                    const response=await fetch(`${connectionUrl}/v1/chat/completions`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+                    if(!response.ok){
+                        const errorText=await response.text()
+                        throw new Error(`Ошибка ${response.status}: ${errorText.substring(0,100)}`)
                     }
-                    
-                    connectionUrl = `http://${ip}:${port}`;
-                    
-                    connectBtn.disabled = true;
-                    connectBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Подключение...</span>';
-                    
-                    try {
-                        const response = await fetch(`${connectionUrl}/v1/models`, {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        });
-                        
-                        if (!response.ok) {
-                            throw new Error(`Сервер недоступен: ${response.status}`);
-                        }
-                        
-                        const data = await response.json();
-                        const modelName = data.data[0]?.id || 'Неизвестная модель';
-                        modelInfo.innerHTML = `<i class="fas fa-check-circle"></i> Модель: ${modelName}`;
-                        
-                        updateConnectionStatus(true, ip, port);
-                    } catch (error) {
-                        console.error('Ошибка подключения:', error);
-                        connectionInfo.textContent = 'Ошибка подключения';
-                        connectionInfo.classList.add('connection-error');
-                        modelInfo.innerHTML = '<i class="fas fa-times-circle"></i> Сервер недоступен';
-                        modelInfo.style.color = '#ff3b30';
-                        
-                        alert(`Не удалось подключиться к ${connectionUrl}\n\nПроверьте:\n1. LM Studio запущен\n2. Сервер API активен\n3. Правильные IP и порт\n\nОшибка: ${error.message}`);
-                        updateConnectionStatus(false);
-                    } finally {
-                        connectBtn.disabled = false;
+                    const data=await response.json()
+                    const aiResponse=data.choices[0].message.content
+                    addMessage('ai-message',aiResponse)
+                }catch(error){
+                    console.error('Ошибка при отправке:',error)
+                    if(error.message.includes('400')){
+                        addMessage('ai-message','⚠️ Ошибка формата запроса. Попробуйте отправить сообщение снова.')
+                        connectionDetails.textContent='Ошибка запроса'
+                        connectionDetails.className='connection-error'
+                    }else if(error.message.includes('NetworkError')||error.message.includes('Failed to fetch')){
+                        addMessage('ai-message','🔌 Потеряно соединение с сервером. Проверьте LM Studio.')
+                        updateConnectionStatus(false)
+                        showError('Потеряно соединение с сервером')
+                    }else{
+                        addMessage('ai-message',`❌ Ошибка: ${error.message}`)
+                    }
+                }finally{
+                    typingIndicator.classList.remove('active')
+                }
+            }
+            
+            async function testConnection(url){
+                try{
+                    const controller=new AbortController()
+                    const timeoutId=setTimeout(()=>controller.abort(),8000)
+                    const response=await fetch(`${url}/v1/models`,{method:'GET',headers:{'Content-Type':'application/json'},signal:controller.signal})
+                    clearTimeout(timeoutId)
+                    if(!response.ok)throw new Error(`Сервер недоступен (${response.status})`)
+                    return{success:true}
+                }catch(error){
+                    console.error('Ошибка теста подключения:',error)
+                    if(error.name==='AbortError')return{success:false,error:'Таймаут подключения (8 секунд)'}
+                    else if(error.message.includes('CORS'))return{success:false,error:'Ошибка CORS. Сервер не разрешает запросы'}
+                    else if(error.message.includes('NetworkError'))return{success:false,error:'Сервер не найден или не запущен'}
+                    return{success:false,error:error.message||'Не удалось подключиться к серверу'}
+                }
+            }
+            
+            async function connectToServer(){
+                if(isConnected){
+                    updateConnectionStatus(false)
+                    addMessage('ai-message','🔌 Подключение разорвано.',false)
+                    connectionUrl=''
+                    return
+                }
+                const ip=ipAddressInput.value.trim()
+                const port=portInput.value.trim()
+                if(!ip||!port){
+                    showError('Введите IP-адрес и порт сервера')
+                    return
+                }
+                if(!isValidIP(ip)){
+                    showError('Некорректный IP-адрес. Пример: 127.0.0.1 или 26.24.239.213')
+                    return
+                }
+                if(reconnectAttempts>=MAX_RECONNECT_ATTEMPTS){
+                    showError('Слишком много неудачных попыток подключения')
+                    return
+                }
+                connectionUrl=`http://${ip}:${port}`
+                currentSettings={ip,port}
+                updateConnectionStatus(false,true)
+                hideError()
+                reconnectAttempts++
+                try{
+                    const result=await testConnection(connectionUrl)
+                    if(!result.success)throw new Error(result.error||'Не удалось подключиться к серверу')
+                    updateConnectionStatus(true)
+                    addMessage('ai-message','🔍 Проверяю доступные модели...',false)
+                    const controller=new AbortController()
+                    const timeoutId=setTimeout(()=>controller.abort(),5000)
+                    const modelsResponse=await fetch(`${connectionUrl}/v1/models`,{signal:controller.signal})
+                    clearTimeout(timeoutId)
+                    const modelsData=await modelsResponse.json()
+                    if(modelsData.data&&modelsData.data.length>0){
+                        const modelName=modelsData.data[0].id
+                        connectionDetails.textContent=`Модель: ${modelName}`
+                        addMessage('ai-message',`✅ Готово! Используется модель: ${modelName}`,false)
+                    }else{
+                        connectionDetails.textContent='Модель загружена'
+                        addMessage('ai-message','✅ Сервер готов к работе!',false)
+                    }
+                }catch(error){
+                    console.error('Ошибка подключения:',error)
+                    let errorMsg='Не удалось подключиться к серверу'
+                    if(error.message.includes('timeout')||error.message.includes('AbortError'))errorMsg='Сервер не отвечает (таймаут 8 секунд). Проверьте:\n1. Запущен ли LM Studio\n2. Активен ли сервер API\n3. Правильность IP и порта'
+                    else if(error.message.includes('CORS'))errorMsg='Ошибка CORS. Убедитесь, что сервер разрешает запросы с этого сайта'
+                    else if(error.message.includes('NetworkError'))errorMsg='Сервер не найден. Проверьте:\n1. Правильность IP адреса\n2. Запущен ли сервер LM Studio\n3. Не блокирует ли брандмауэр подключение'
+                    showError(errorMsg)
+                    updateConnectionStatus(false)
+                    if(reconnectAttempts<MAX_RECONNECT_ATTEMPTS)addMessage('ai-message',`⚠️ Попытка подключения ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS} не удалась. Проверьте настройки сервера.`,false)
+                }
+            }
+            
+            function clearConversationHistory(){
+                conversationHistory=[]
+                const messages=chatMessages.querySelectorAll('.message')
+                messages.forEach(msg=>{
+                    if(!msg.classList.contains('ai-message')||!msg.textContent.includes('Подключение установлено')&&!msg.textContent.includes('Ожидание подключения')&&!msg.textContent.includes('Проверяю доступные модели')&&!msg.textContent.includes('Готово!'))msg.remove()
+                })
+                if(welcomeMessage&&!isConnected)welcomeMessage.style.display='block'
+                addMessage('ai-message','🗑️ История чата очищена.',false)
+            }
+            
+            function selectIcon(iconOption){
+                iconOptions.forEach(opt=>opt.classList.remove('selected'))
+                iconOption.classList.add('selected')
+                if(iconOption.dataset.icon==='custom'){
+                    customIconInput.classList.add('show')
+                    customIconText.focus()
+                }else{
+                    customIconInput.classList.remove('show')
+                    aiSettings.icon=iconOption.dataset.icon
+                    aiSettings.iconClass=iconOption.dataset.icon
+                    setAvatarGradient(aiSettings.icon)
+                }
+            }
+            
+            function handleCustomIcon(){
+                const iconCode=customIconText.value.trim()
+                if(iconCode){
+                    const testIcon=document.createElement('i')
+                    testIcon.className=iconCode
+                    if(iconCode.startsWith('fas ')||iconCode.startsWith('fab ')||iconCode.startsWith('far ')){
+                        aiSettings.icon='custom'
+                        aiSettings.iconClass=iconCode
+                        const customOption=document.querySelector('.icon-option.custom')
+                        const customIcon=customOption.querySelector('i')
+                        customIcon.className=iconCode
+                        setAvatarGradient('custom')
+                    }else{
+                        showNotification('Используйте код FontAwesome (например: fas fa-star)')
                     }
                 }
-                
-                if (window.innerWidth <= 768) {
-                    closeSidebar();
-                }
             }
             
-            function clearConversationHistory() {
-                conversationHistory = [];
-                
-                const messages = chatMessages.querySelectorAll('.message');
-                messages.forEach(msg => {
-                    if (!msg.classList.contains('ai-message') || !msg.textContent.includes('Подключение установлено') && !msg.textContent.includes('Ожидание подключения')) {
-                        msg.remove();
-                    }
-                });
-                
-                if (welcomeMessage && !isConnected) {
-                    welcomeMessage.style.display = 'block';
-                }
-                
-                addMessage('ai-message', 'История чата очищена.', false);
+            function openSidebar(){
+                sidebar.classList.add('active')
+                sidebarOverlay.classList.add('active')
+                document.body.style.overflow='hidden'
             }
             
-            function toggleFileUpload() {
-                fileUploadContainer.classList.toggle('active');
+            function closeSidebar(){
+                sidebar.classList.remove('active')
+                sidebarOverlay.classList.remove('active')
+                document.body.style.overflow='auto'
             }
             
-            function handleFileSelect(files) {
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    
-                    if (file.size > 50 * 1024 * 1024) {
-                        alert(`Файл ${file.name} слишком большой (максимум 50MB)`);
-                        continue;
-                    }
-                    
-                    attachedFiles.push(file);
+            loadSettings()
+            
+            connectBtn.addEventListener('click',connectToServer)
+            retryBtn.addEventListener('click',connectToServer)
+            sendBtn.addEventListener('click',sendMessage)
+            clearHistoryBtn.addEventListener('click',clearConversationHistory)
+            saveAiSettingsBtn.addEventListener('click',saveAiSettings)
+            
+            iconOptions.forEach(option=>{
+                option.addEventListener('click',()=>selectIcon(option))
+            })
+            
+            customIconText.addEventListener('change',handleCustomIcon)
+            customIconText.addEventListener('blur',handleCustomIcon)
+            
+            chatInput.addEventListener('keydown',function(e){
+                if(e.key==='Enter'&&!e.shiftKey){
+                    e.preventDefault()
+                    sendMessage()
                 }
-                
-                updateFileList();
-            }
+            })
             
-            loadSettings();
+            chatInput.addEventListener('input',function(){
+                this.style.height='auto'
+                this.style.height=(this.scrollHeight)+'px'
+                if(this.value.trim())sendBtn.disabled=false
+                else sendBtn.disabled=!isConnected
+            })
             
-            connectBtn.addEventListener('click', toggleConnection);
+            ipAddressInput.addEventListener('input',saveConnectionSettings)
+            portInput.addEventListener('input',saveConnectionSettings)
+            aiNameInput.addEventListener('input',()=>{
+                aiNameDisplay.textContent=aiNameInput.value||'LM Studio AI'
+            })
             
-            sendBtn.addEventListener('click', sendMessage);
+            mobileMenuBtn.addEventListener('click',openSidebar)
+            sidebarCloseBtn.addEventListener('click',closeSidebar)
+            sidebarOverlay.addEventListener('click',closeSidebar)
             
-            chatInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    sendMessage();
-                }
-            });
+            window.addEventListener('resize',function(){
+                if(window.innerWidth>768)closeSidebar()
+            })
             
-            chatInput.addEventListener('input', function() {
-                this.style.height = 'auto';
-                this.style.height = (this.scrollHeight) + 'px';
-                
-                if (this.value.trim()) {
-                    sendBtn.disabled = false;
-                } else {
-                    sendBtn.disabled = !isConnected;
-                }
-            });
-            
-            clearContextBtn.addEventListener('click', clearConversationHistory);
-            
-            attachFileBtn.addEventListener('click', toggleFileUpload);
-            
-            closeUploadBtn.addEventListener('click', () => {
-                fileUploadContainer.classList.remove('active');
-            });
-            
-            fileDropArea.addEventListener('click', () => {
-                fileInput.click();
-            });
-            
-            fileDropArea.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                fileDropArea.style.borderColor = '#0088cc';
-                fileDropArea.style.backgroundColor = 'rgba(0, 136, 204, 0.1)';
-            });
-            
-            fileDropArea.addEventListener('dragleave', () => {
-                fileDropArea.style.borderColor = '#4d4d4d';
-                fileDropArea.style.backgroundColor = 'transparent';
-            });
-            
-            fileDropArea.addEventListener('drop', (e) => {
-                e.preventDefault();
-                fileDropArea.style.borderColor = '#4d4d4d';
-                fileDropArea.style.backgroundColor = 'transparent';
-                handleFileSelect(e.dataTransfer.files);
-            });
-            
-            fileInput.addEventListener('change', (e) => {
-                handleFileSelect(e.target.files);
-                fileInput.value = '';
-            });
-            
-            uploadButton.addEventListener('click', () => {
-                if (attachedFiles.length > 0) {
-                    fileUploadContainer.classList.remove('active');
-                }
-            });
-            
-            saveSettingsBtn.addEventListener('click', saveSettings);
-            
-            loadSettingsBtn.addEventListener('click', loadSettings);
-            
-            function openSidebar() {
-                sidebar.classList.add('active');
-                sidebarOverlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-            
-            function closeSidebar() {
-                sidebar.classList.remove('active');
-                sidebarOverlay.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            }
-            
-            mobileMenuBtn.addEventListener('click', openSidebar);
-            sidebarOverlay.addEventListener('click', closeSidebar);
-            
-            window.addEventListener('resize', function() {
-                if (window.innerWidth > 768) {
-                    closeSidebar();
-                }
-            });
-            
-            document.addEventListener('click', (e) => {
-                if (!fileUploadContainer.contains(e.target) && 
-                    !attachFileBtn.contains(e.target) && 
-                    fileUploadContainer.classList.contains('active')) {
-                    fileUploadContainer.classList.remove('active');
-                }
-            });
-            
-            setTimeout(() => {
-                if (!isConnected) {
-                    addMessage('ai-message', 'Для начала работы подключитесь к серверу LM Studio через боковую панель.', false);
-                }
-            }, 1000);
-        });
+            setTimeout(()=>{
+                if(!isConnected)addMessage('ai-message',`👋 Привет! Я ваш будущий ${aiSettings.role.toLowerCase()} ${aiSettings.name}. Подключитесь к серверу LM Studio через боковую панель.`,false)
+            },1000)
+        })
     </script>
 </body>
 </html>
